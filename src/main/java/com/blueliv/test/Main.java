@@ -215,7 +215,14 @@ public class Main {
      */
     static class DataProcessor implements Runnable {
 
+	/**
+	 * Concurrent set
+	 */
 	private static final Set<String> FILTERED_VALUE_SET = ConcurrentHashMap.newKeySet(FILTERED_VALUE_SET_INITIAL_SIZE);
+	
+	/**
+	 * this mutex prevent read-write entries in FILTERED_VALUE_SET.
+	 */
 	private static final Semaphore DATA_PROCESSOR_MUTEX = new Semaphore(1);
 
 	private final CountDownLatch latch;
