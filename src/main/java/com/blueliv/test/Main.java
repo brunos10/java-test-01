@@ -78,7 +78,9 @@ public class Main {
 	    String filterValue;
 
 	    if (args.length != 3) {
-		// print error
+		System.out.println("Invalid command error. You have to use: \n"+	
+			"'java -jar application.jar input.txt CITY [CITY_NAME]' or \n"+ 
+			"'java -jar application.jar input.txt ID [PERSON_ID]' or \n");
 		return;
 	    }
 
@@ -100,6 +102,9 @@ public class Main {
 
 	    dataProcessorPoolLatch.await();
 	    dataLoaderPoolLatch.await();
+	    
+	    dataProcessorPool.shutdown();
+	    dataLoaderPool.shutdown();
 
 	} catch (InvalidFilterTypeException ex) {
 	    log.log(Level.SEVERE, null, ex);
