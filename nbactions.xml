@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
-        <action>
+<!--        <action>
             <actionName>run</actionName>
             <packagings>
                 <packaging>jar</packaging>
@@ -42,5 +42,5 @@
                 <exec.args>-classpath %classpath com.blueliv.test.Main /home/bruno/NetBeansProjects/blueliv/src/test/resources/data.txt CITY CARTAGENA</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
-        </action>
+        </action>-->
     </actions>
