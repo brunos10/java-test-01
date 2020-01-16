@@ -36,9 +36,9 @@ public class Main {
     private static BlockingQueue<String> DATA_QUEUE;
     
     /**
-     * Initial size of DATA_QUEUE. Increase this value to prevent unnecesary resizing.
+     * Initial size of DATA_QUEUE. Increase this value to increase the buffer size.
      */
-    private static int DATA_QUEUE_INITIAL_SIZE = 100;
+    private static int DATA_QUEUE_SIZE = 100;
     
     /**
      * Initial size of FILTERED_VALUE_SET_INITIAL_SIZE. Increase this value to prevent unnecesary resizing.
@@ -61,7 +61,7 @@ public class Main {
 	 * Read enviroment variables
 	 */
 	String dataProcessorCount = System.getProperty("data.processor.count");
-	String dataQueueInitialSize = System.getProperty("data.queue.initialsize");
+	String dataQueueSize = System.getProperty("data.queue.size");
 	String filteredValueSetInitialSize = System.getProperty("filtered.value.set.initial.size");
 
 	if (dataProcessorCount != null) {
@@ -72,9 +72,9 @@ public class Main {
 	    }
 	}
 
-	if (dataQueueInitialSize != null) {
+	if (dataQueueSize != null) {
 	    try {
-		DATA_QUEUE_INITIAL_SIZE = Integer.parseInt(dataQueueInitialSize);
+		DATA_QUEUE_SIZE = Integer.parseInt(dataQueueSize);
 	    } catch (NumberFormatException ex) {
 		//use default value
 	    }
@@ -88,7 +88,7 @@ public class Main {
 	    }
 	}
 
-	DATA_QUEUE = new LinkedBlockingQueue<String>(DATA_QUEUE_INITIAL_SIZE);
+	DATA_QUEUE = new LinkedBlockingQueue<String>(DATA_QUEUE_SIZE);
 
 	try {
 
