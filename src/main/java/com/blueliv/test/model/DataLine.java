@@ -26,6 +26,12 @@ public class DataLine {
 	this.cityName = cityName;
     }
     
+    /**
+     * 
+     * @param line in format 'F1,CARLOS PEREZ,SAN FRANCISCO,12345678Z' or 'F2 ; CARLOS PEREZ ; SAN FRANCISCO ; 12345678-Z'
+     * @return DataLine object normalized. If personId is in F2 then, it's converted to F2 removing '-' character.
+     * @throws InvalidDataLineException 
+     */
     public static DataLine parse(String line) throws InvalidDataLineException{
 	DataLineFormat format = DataLineFormat.F1;
 	if(line.startsWith("F2")){

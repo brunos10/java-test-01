@@ -34,13 +34,32 @@ import lombok.extern.java.Log;
 public class Main {
 
     private static BlockingQueue<String> DATA_QUEUE;
+    
+    /**
+     * Initial size of DATA_QUEUE. Increase this value to prevent unnecesary resizing.
+     */
     private static int DATA_QUEUE_INITIAL_SIZE = 100;
+    
+    /**
+     * Initial size of FILTERED_VALUE_SET_INITIAL_SIZE. Increase this value to prevent unnecesary resizing.
+     */
     private static int FILTERED_VALUE_SET_INITIAL_SIZE = 100;
+    
+    /**
+     * The number of thread for concurrent process each data line of the file.
+     */
     private static int DATA_PROCESSOR_COUNT = 1;
+    
+    /**
+     * POISON char sequence
+     */
     private static final String POISON = "EXIT";
 
     public static void main(String[] args) {
 
+	/**
+	 * Read enviroment variables
+	 */
 	String dataProcessorCount = System.getProperty("data.processor.count");
 	String dataQueueInitialSize = System.getProperty("data.queue.initialsize");
 	String filteredValueSetInitialSize = System.getProperty("filtered.value.set.initial.size");
@@ -89,6 +108,10 @@ public class Main {
 	    filterValue = args[2];
 
 	    FileInputStream fio = new FileInputStream(path);
+	    
+	    /**
+	     * Create threads
+	     */
 
 	    ExecutorService dataLoaderPool = Executors.newFixedThreadPool(1);
 	    CountDownLatch dataLoaderPoolLatch = new CountDownLatch(1);
@@ -100,9 +123,15 @@ public class Main {
 		dataProcessorPool.submit(new DataProcessor(dataProcessorPoolLatch, filterType, filterValue));
 	    }
 
+	    /**
+	     * Wait unit all thread are finished
+	     */
 	    dataProcessorPoolLatch.await();
 	    dataLoaderPoolLatch.await();
 	    
+	    /**
+	     * Shutdown the pools
+	     */
 	    dataProcessorPool.shutdown();
 	    dataLoaderPool.shutdown();
 
@@ -115,6 +144,10 @@ public class Main {
 	}
     }
 
+    /**
+     * DataLoader (Producer) is responsible for read line by line the input file and send it to the dataQueue.
+     * This thread replace string 'D ' with the nearest above format, before add the line to the dataQueue.
+     */
     static class DataLoader implements Runnable {
 
 	private final FileInputStream fio;
@@ -177,6 +210,9 @@ public class Main {
 
     }
 
+    /**
+     * DataProcessor (Consumer) process each line that was loaded en the dataQueue.
+     */
     static class DataProcessor implements Runnable {
 
 	private static final Set<String> FILTERED_VALUE_SET = ConcurrentHashMap.newKeySet(FILTERED_VALUE_SET_INITIAL_SIZE);

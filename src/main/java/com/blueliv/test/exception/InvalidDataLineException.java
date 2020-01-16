@@ -8,7 +8,7 @@ package com.blueliv.test.exception;
 import com.blueliv.test.model.DataLineFormat;
 
 /**
- *
+ * 
  * @author bruno
  */
 public class InvalidDataLineException extends Exception{
